@@ -43,6 +43,7 @@ server.put('/product', (req, res)=>{
     res.send({message:'Sucess!!'})
 })
 
+//Delete => deleta
 server.delete('/product/:id', (req,res) =>{
     const {id} = req.params
 
