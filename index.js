@@ -1,3 +1,6 @@
+
+const api = require('./api')
+
 const express = require('express');
 
 const server = express();
@@ -53,3 +56,20 @@ server.delete('/product/:id', (req,res) =>{
 
     res.send({product:products})
 })
+
+server.get('/pokemon', async(req,res) => {
+   try {
+       const { data} = await api.get('pokemon/1')
+       return res.send({name: data.name})
+    
+   } catch (error) {
+       res.send({error:error.message})
+       
+   }
+
+  
+  
+    
+})
+
+// async => reposição asincrona await=> espere enquanto n tem retorno
