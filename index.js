@@ -1,5 +1,7 @@
 
-const api = require('./api')
+const api = require('./api');
+
+const localStorage = require('localStorage');
 
 const express = require('express');
 
@@ -66,10 +68,36 @@ server.get('/pokemon', async(req,res) => {
        res.send({error:error.message})
        
    }
-
-  
-  
     
 })
 
+
 // async => reposição asincrona await=> espere enquanto n tem retorno
+
+function verifyUserAlready(req, res, next){
+    const { email } = req.body
+
+    if (!allUsers.find(user => user.email === email)) {
+        return next();
+    }
+    return res.status(400).json({ Failed: 'This is email already registed'})
+}
+
+const allUsers = [];
+
+server.post('/register-user', verifyUserAlready, (req,res)=> {
+    const user = req.body;
+
+    allUsers.push(user)
+
+    localStorage.setItem('users', JSON.stringify(allUsers))
+
+    return res.json({ user })
+})
+
+server.get('/users',(req,res)=> {
+
+    const users = JSON.parse(localStorage.getItem('users'))
+
+    return res.json(users)
+})
